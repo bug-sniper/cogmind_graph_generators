@@ -1,8 +1,5 @@
 import csv
-import json
-import os
 import re
-import urllib
 
 import plotly
 import plotly.graph_objs as go
@@ -41,12 +38,16 @@ COLOR_SOURCE = """.score-SCR, .score-SCR a, .score-SCR a:visited:hover { color: 
 .score-AC0, .score-AC0 a, .score-AC0 a:visited:hover { color: #dedede; }"""
 
 def normalized(name):
+    """Changes the names to make them easier to match"""
     for c in " -._":
         name = name.replace(c, "")
     name = name.lower()
     return name
 
 def get_reviewer_names():
+    """Gets all the reviewer names out of a text file. This text file can
+    be formed by selecting all the text from the reviews page and pasting
+    it into a new text file."""
     names = []
     with open("online_reviews.txt", "r") as review_file:
         text = review_file.read()
@@ -67,12 +68,13 @@ def get_highscore_map():
     return highscore_map
 
 def create_trace(location, yvals):
+    """Creates an object that can be added to the graph"""
     if yvals[NUMBER_OF_LEVELS-1] == 0:
         abbrev = location[:3].upper()
     else:
         abbrev = "SUR"
     trace = go.Bar(
-        x=range(-(NUMBER_OF_LEVELS-1), 1), #-11 - 0, for example
+        x=list(range(-(NUMBER_OF_LEVELS-1), 1)), #-11 - 0, for example
         y=yvals,
         name=location,
         marker=dict(
@@ -86,6 +88,7 @@ def create_trace(location, yvals):
     return trace
 
 def adjusted_location(location):
+    """Adjusted the location name so that their abbreviation is more useful"""
     dic = {
         "L. Caves": "Lower Caves",
         "U. Caves": "Upper Caves",

@@ -38,12 +38,13 @@ COLOR_SOURCE = """.score-SCR, .score-SCR a, .score-SCR a:visited:hover { color: 
 .score-AC0, .score-AC0 a, .score-AC0 a:visited:hover { color: #dedede; }"""
 
 def create_trace(location, yvals):
+    """Creates an object that can be added to the graph"""
     if yvals[NUMBER_OF_LEVELS-1] == 0:
         abbrev = location[:3].upper()
     else:
         abbrev = "SUR"
     trace = go.Bar(
-        x=range(-(NUMBER_OF_LEVELS-1), 1), #-11 - 0, for example
+        x=list(range(-(NUMBER_OF_LEVELS-1), 1)), #-11 - 0, for example
         y=yvals,
         name=location,
         marker=dict(
@@ -57,12 +58,13 @@ def create_trace(location, yvals):
     return trace
 
 def get_location_from_filename(filename):
-    file = open(os.path.join(SCORES_PATH, filename), "r")
-    for line in file:
+    """Gets the location from a logfile"""
+    logfile = open(os.path.join(SCORES_PATH, filename), "r")
+    for line in logfile:
         if len(line.split()) >= 2 and line.split()[0] == "Location":
             location = " ".join(line.split()[1:])
             return location
-    raise RuntimeError("bad file: %s" % filename)
+    raise RuntimeError("Bad file: %s" % filename)
 
 if __name__ == "__main__":
     colors = {}

@@ -1,1 +1,1 @@
-This is a set of scripts that generate graphs about which floor cogmind players end their game at.
+This is a set of scripts that generate graphs about which floor cogmind players end their game at. They can be used in either Python 2 or Python 3.
